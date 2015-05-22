@@ -9,12 +9,21 @@
             "email": "vegas@amsterdam-standard.pl"
         }
     ],
-    "repositories": [],
+    "repositories": [
+        {
+            "type" : "git",
+            "url" : "https://github.com/arius86/core.git"
+        },
+        {
+            "type" : "git",
+            "url" : "https://github.com/arius86/session.git"
+        }
+    ],
     "require": {
         "php": ">=5.4",
-        "ext-phalcon": ">=1.3.0,<2",
-        "vegas-cmf/core" : "1.*",
-        "vegas-cmf/session" : "1.*"
+        "ext-phalcon": "2.*",
+        "vegas-cmf/core" : "v2.0.x-dev",
+        "vegas-cmf/session" : "v2.0.x-dev"
     },
     "require-dev": {
         "phalcon/devtools": "1.3.x-dev",

@@ -42,21 +42,30 @@ class StandardTest extends \PHPUnit_Framework_TestCase
     public function testAuthenticateValidUser()
     {
         $user = $this->createTempUser();
-
         $auth = DI::getDefault()->get('auth');
+
+        $this->assertFalse($auth->isAuthenticated());
         $this->assertTrue($auth->authenticate($user, 'test1234'));
+        $this->assertTrue($auth->isAuthenticated());
 
         $this->assertInstanceOf('\MongoId', $auth->getIdentity()->getId());
+
         $this->assertNotNull($auth->getIdentity()->getEmail());
+        $this->assertNotNull($auth->getIdentity()->email);
+
+        $values = $auth->getIdentity()->toArray();
+        $this->assertArrayHasKey('id', $values);
+        $this->assertArrayHasKey('email', $values);
     }
 
+    /**
+     * @expectedException \Vegas\Security\Authentication\Exception\InvalidCredentialException
+     */
     public function testAuthenticateInvalidUser()
     {
         $user = $this->createTempUser();
-
         $auth = DI::getDefault()->get('auth');
 
-        $this->setExpectedException('\Vegas\Security\Authentication\Exception\InvalidCredentialException');
         $auth->authenticate($user, 'pass1234');
     }
 }

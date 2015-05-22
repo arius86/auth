@@ -41,12 +41,20 @@ class NoCredentialTest extends \PHPUnit_Framework_TestCase
     public function testAuthenticateValidUser()
     {
         $user = $this->createTempUser();
-
         $auth = DI::getDefault()->get('authNoCredential');
+
+        $this->assertFalse($auth->isAuthenticated());
         $this->assertTrue($auth->authenticate($user, null));
+        $this->assertTrue($auth->isAuthenticated());
 
         $this->assertInstanceOf('\MongoId', $auth->getIdentity()->getId());
+
         $this->assertNotNull($auth->getIdentity()->getEmail());
+        $this->assertNotNull($auth->getIdentity()->email);
+
+        $values = $auth->getIdentity()->toArray();
+        $this->assertArrayHasKey('id', $values);
+        $this->assertArrayHasKey('email', $values);
     }
 
     public function testAuthenticateInvalidUser()
